@@ -15,6 +15,7 @@ class AppointmentController {
     const { provider_id, date } = req.body;
     /**
      * Check if provider_id is a provider
+     * Verifica se o id do prestador é de um prestador
      */
     const isProvider = await User.findOne({
       where: { id: provider_id, provider: true },
@@ -26,6 +27,7 @@ class AppointmentController {
     }
     /**
      * Check for past date
+     * Verifica se não é uma data passada
      */
     const hourStart = startOfHour(parseISO(date));
     if (isBefore(hourStart, new Date())) {
@@ -33,6 +35,7 @@ class AppointmentController {
     }
     /**
      * Check date availability
+     * Verifica a disponibilidade de data e hora
      */
     const checkAvailability = await Appointment.findOne({
       where: {
