@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { startOfHour, parseISO, isBefore } from 'date-fns';
+// import pt from 'date-fns/locale/pt-BR';
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointments';
@@ -10,7 +11,7 @@ class AppointmentController {
     const appointments = await Appointment.findAll({
       where: { user_id: req.userId, canceled_at: null },
       order: ['date'],
-      attributes: ['id', 'name'],
+      attributes: ['id', 'date'],
       limit: 20,
       offset: (page - 1) * 20,
       include: [
@@ -39,12 +40,13 @@ class AppointmentController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validations fails.' });
     }
+
     const { provider_id, date } = req.body;
-    /**
+    /*
      * Check if provider_id is a provider
      * Verifica se o id do prestador é de um prestador
      */
-    const isProvider = await User.findOne({
+    /* const isProvider = await User.findOne({
       where: { id: provider_id, provider: true },
     });
     if (!isProvider) {
@@ -57,14 +59,14 @@ class AppointmentController {
      * Verifica se não é uma data passada
      */
     const hourStart = startOfHour(parseISO(date));
-    if (isBefore(hourStart, new Date())) {
+    /* if (isBefore(hourStart, new Date())) {
       return res.status(400).json({ error: 'Past date are not premitted' });
     }
     /**
      * Check date availability
      * Verifica a disponibilidade de data e hora
      */
-    const checkAvailability = await Appointment.findOne({
+    /* const checkAvailability = await Appointment.findOne({
       where: {
         provider_id,
         canceled_at: null,
@@ -76,7 +78,7 @@ class AppointmentController {
         .status(400)
         .json({ error: 'Appointment date is not available' });
     }
-
+*/
     const appointment = await Appointment.create({
       user_id: req.userId,
       provider_id,
