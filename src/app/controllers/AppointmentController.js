@@ -4,6 +4,7 @@ import pt from 'date-fns/locale/pt-BR';
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointments';
+import Notification from '../schemas/Notification';
 
 class AppointmentController {
   async index(req, res) {
@@ -93,7 +94,7 @@ class AppointmentController {
     const formattedDate = format(
       hourStart,
       "'dia' dd 'de' MMMM', às' H:mm'h'",
-      { locate: pt }
+      { locale: pt }
     );
 
     await Notification.create({

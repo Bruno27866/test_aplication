@@ -9,7 +9,7 @@ const NotificationsSchema = new mongoose.Schema(
     user: {
       type: Number,
       required: true,
-    }
+    },
     read: {
       type: Boolean,
       required: true,
