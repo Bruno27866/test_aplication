@@ -42,10 +42,14 @@ class AppointmentController {
       return res.status(400).json({ error: 'Validations fails.' });
     }
 
+    /**
+     * Check if provider_id and user_id is the same
+     * Verifica se provider_id e user_id são os mesmo
+     */
     const { provider_id, date } = req.body;
     if (provider_id === req.userId) {
       return res.status(401).json({
-        error: 'You cant creat a new appointment by your self.',
+        error: 'You cannot creat a new appointment for yourself.',
       });
     }
     /*
