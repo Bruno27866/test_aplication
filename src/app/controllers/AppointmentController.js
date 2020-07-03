@@ -5,6 +5,7 @@ import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointments';
 import Notification from '../schemas/Notification';
+// import Mail from '../../lib/Mail';
 import Queue from '../../lib/Queue';
 import CancellationMail from '../jobs/CancellationMail';
 
@@ -154,6 +155,19 @@ class AppointmentController {
     await Queue.add(CancellationMail.key, {
       appointment,
     });
+
+    /* await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      template: 'cancellation',
+      context: {
+        provider: appointment.provider.name,
+        user: appointment.user.date,
+        date: format(appointment.date, "dd 'de' MMMM', ás' H:mm'h'", {
+          locale: pt,
+        }),
+      },
+    }); */
 
     return res.json(appointment);
   }
